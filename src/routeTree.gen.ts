@@ -10,12 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PreviewRouteImport } from './routes/preview'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as ExecuteRouteImport } from './routes/execute'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PreviewRoute = PreviewRouteImport.update({
   id: '/preview',
   path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExecuteRoute = ExecuteRouteImport.update({
+  id: '/execute',
+  path: '/execute',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreateRoute = CreateRouteImport.update({
@@ -32,30 +44,38 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/execute': typeof ExecuteRoute
+  '/history': typeof HistoryRoute
   '/preview': typeof PreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/execute': typeof ExecuteRoute
+  '/history': typeof HistoryRoute
   '/preview': typeof PreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/execute': typeof ExecuteRoute
+  '/history': typeof HistoryRoute
   '/preview': typeof PreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create' | '/preview'
+  fullPaths: '/' | '/create' | '/execute' | '/history' | '/preview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create' | '/preview'
-  id: '__root__' | '/' | '/create' | '/preview'
+  to: '/' | '/create' | '/execute' | '/history' | '/preview'
+  id: '__root__' | '/' | '/create' | '/execute' | '/history' | '/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
+  ExecuteRoute: typeof ExecuteRoute
+  HistoryRoute: typeof HistoryRoute
   PreviewRoute: typeof PreviewRoute
 }
 
@@ -66,6 +86,20 @@ declare module '@tanstack/react-router' {
       path: '/preview'
       fullPath: '/preview'
       preLoaderRoute: typeof PreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/execute': {
+      id: '/execute'
+      path: '/execute'
+      fullPath: '/execute'
+      preLoaderRoute: typeof ExecuteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/create': {
@@ -88,6 +122,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
+  ExecuteRoute: ExecuteRoute,
+  HistoryRoute: HistoryRoute,
   PreviewRoute: PreviewRoute,
 }
 export const routeTree = rootRouteImport
