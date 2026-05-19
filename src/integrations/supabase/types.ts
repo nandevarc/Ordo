@@ -14,7 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      batches: {
+        Row: {
+          batch_name: string | null
+          created_at: string
+          failed_count: number
+          gas_used_usdc: number | null
+          id: string
+          recipient_count: number
+          status: string
+          successful_count: number
+          total_amount: number
+          tx_hash: string | null
+          wallet_address: string
+        }
+        Insert: {
+          batch_name?: string | null
+          created_at?: string
+          failed_count?: number
+          gas_used_usdc?: number | null
+          id?: string
+          recipient_count?: number
+          status?: string
+          successful_count?: number
+          total_amount?: number
+          tx_hash?: string | null
+          wallet_address: string
+        }
+        Update: {
+          batch_name?: string | null
+          created_at?: string
+          failed_count?: number
+          gas_used_usdc?: number | null
+          id?: string
+          recipient_count?: number
+          status?: string
+          successful_count?: number
+          total_amount?: number
+          tx_hash?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      recipients: {
+        Row: {
+          amount: number
+          batch_id: string
+          created_at: string
+          error_message: string | null
+          id: string
+          note: string | null
+          status: string
+          wallet_address: string
+        }
+        Insert: {
+          amount: number
+          batch_id: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          note?: string | null
+          status?: string
+          wallet_address: string
+        }
+        Update: {
+          amount?: number
+          batch_id?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          note?: string | null
+          status?: string
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipients_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
