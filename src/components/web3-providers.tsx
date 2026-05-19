@@ -1,22 +1,13 @@
-import { useEffect, useState } from "react";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { getWagmiConfig } from "@/lib/wagmi";
 
 /**
- * Web3 providers are mounted client-only because wagmi/RainbowKit touch
- * window, localStorage, and IndexedDB during init.
+ * Wagmi v2 supports SSR via `ssr: true` in getDefaultConfig.
+ * Mounted always so hooks like useAccount are safe on first render.
  */
 export function Web3Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   const config = getWagmiConfig();
-
   return (
     <WagmiProvider config={config}>
       <RainbowKitProvider
